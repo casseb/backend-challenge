@@ -2,6 +2,7 @@ package com.invillia.acme.common;
 
 import com.invillia.acme.ds.OrderItem;
 import com.invillia.acme.ds.OrderStore;
+import com.invillia.acme.ds.Payment;
 import com.invillia.acme.ds.Store;
 import static org.mockito.Mockito.*;
 
@@ -10,7 +11,8 @@ import java.util.Set;
 
 public class TestCase {
 	
-	private static String STORE_NAME_TEST = "Store Test";
+	private static final String STORE_NAME_TEST = "StoreTest";
+	private static final String CREDIT_CARD = "12345";
 	
 	public Store getEmptyStoreTest(){
 		return new Store();
@@ -39,5 +41,12 @@ public class TestCase {
 		return OrderStore.builder()
 							.orderItems(items)
 							.build();
+	}
+	
+	public Payment getPayment(Integer order) {
+		return Payment.builder()
+						.orderId(order)
+						.creditCardNumber(CREDIT_CARD)
+						.build();
 	}
 }

@@ -1,6 +1,7 @@
 package com.invillia.acme.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.invillia.acme.ds.Payment;
+import com.invillia.acme.ds.PaymentResponse;
 import com.invillia.acme.service.PaymentService;
 
 @RestController
@@ -24,8 +26,12 @@ public class PaymentRestController {
 	}
 	
 	@PostMapping("/payment/refund/{id}")
-	public Boolean refund(@PathVariable Integer id) {
-		return paymentService.refundPayment(id);
+	public PaymentResponse refund(@PathVariable Integer id) {
+		Boolean refunded =  paymentService.refundPayment(id);
+		if(refunded) {
+			return PaymentResponse.builder().result("Refunded").build();
+		}
+		return PaymentResponse.builder().result("Not Refunded").build();
 	}
 	
 	@PostMapping("/payment/confirm/{id}")
