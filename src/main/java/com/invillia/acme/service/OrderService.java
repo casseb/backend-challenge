@@ -9,6 +9,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.invillia.acme.ds.OrderNull;
 import com.invillia.acme.ds.OrderStatus;
 import com.invillia.acme.ds.OrderStore;
 import com.invillia.acme.repository.OrderItemRepository;
@@ -21,8 +22,6 @@ public class OrderService {
 	private OrderStoreRepository orderRepository;
 	@Autowired
 	private OrderItemRepository orderItemRepository;
-	@Autowired
-	private PaymentService paymentService;
 	
 	public OrderStore insert(OrderStore orderStore) {
 		orderStore.setStatus(OrderStatus.PROCESSING);
@@ -30,30 +29,8 @@ public class OrderService {
 		return orderRepository.save(orderStore);
 	}
 	
-	public List<OrderStore> retrieve(Integer id, LocalDate confirmationDate, OrderStatus orderStatus, String streetAddress, String city, String state, String zipCode){
-		return orderRepository.
-				findByIdOrConfirmationDateOrStatusOrAddressStreetAddressOrAddressCityOrAddressStateOrAddressZipCode(
-						id, confirmationDate, orderStatus, streetAddress, city, state, zipCode);
-	}
-	
-	public boolean orderAvaliableToRefund(Integer orderId) {
-		return (orderConfirmedUntilTenDays(orderId) && paymentService.isPaidOrder(orderId));
-	}
-	
-	public boolean orderConfirmedUntilTenDays(Integer orderId) {
-		Optional<OrderStore> order = orderRepository.findById(orderId);
-		if(!order.isPresent()) {
-			return false;
-		}
-		
-		LocalDate confirmationDate = order.get().getConfirmationDate();
-		LocalDate today = LocalDate.now();
-		LocalDate dueDate = confirmationDate.plusDays(11);
-		
-		if(dueDate.isBefore(today)) {
-			return true;
-		}
-		return false;
+	public OrderStore retrieveById(Integer orderId){
+		return orderRepository.findById(orderId).orElse(new OrderNull());
 	}
 
 	public void deleteAll() {

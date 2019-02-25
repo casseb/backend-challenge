@@ -8,7 +8,14 @@ import com.invillia.acme.ds.Store;
 
 public interface StoreRepository extends CrudRepository<Store, Integer>{
 
-	public List<Store> findByIdOrNameOrAddressStreetAddressOrAddressCityOrAddressStateOrAddressZipCode(Integer id, String name,
-			String streetAddress, String city, String state, String zipCode);
+	public List<Store> findByName(String name);
+
+	public List<Store> findByAddressStreetAddress(String streetAddress);
+
+	public List<Store> findByAddressCity(String city);
+
+	public List<Store> findByAddressState(String state);
+
+	public List<Store> findByAddressZipCode(String zipCode);
 
 }

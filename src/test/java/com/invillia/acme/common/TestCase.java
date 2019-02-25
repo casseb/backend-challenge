@@ -32,7 +32,7 @@ public class TestCase {
 			OrderItem item = OrderItem.builder()
 									  .description("Item numero "+i)
 									  .quantity((float) 1)
-									  .unit(2)
+									  .unit((float)2)
 									  .build();
 			items.add(item);
 		}

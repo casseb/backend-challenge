@@ -11,4 +11,6 @@ public interface PaymentRepository extends CrudRepository<Payment, Integer>{
 
 	public List<Payment> findByOrderIdAndStatus(Integer orderId, PaymentStatus paid);
 
+	public Payment findByOrderId(Integer orderId);
+
 }

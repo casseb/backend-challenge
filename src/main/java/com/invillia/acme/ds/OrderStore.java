@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -36,7 +37,7 @@ public class OrderStore{
 	@Embedded
 	private Address address;
 
-	@OneToMany(mappedBy = "orderStore")
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<OrderItem> orderItems;
 	
 	@Tolerate
