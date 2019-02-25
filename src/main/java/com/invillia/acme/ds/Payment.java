@@ -11,11 +11,14 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import lombok.Builder;
 import lombok.Data;
+import lombok.experimental.Tolerate;
 
 @Entity
 @Table(name = "payment")
 @Data
+@Builder
 public class Payment {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,4 +30,9 @@ public class Payment {
 	private String creditCardNumber;
 
 	private LocalDate paymentDate;
+	
+	private Integer orderId; 
+	
+	@Tolerate
+	public Payment() {}
 }

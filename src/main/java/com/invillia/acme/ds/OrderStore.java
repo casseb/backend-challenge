@@ -14,11 +14,14 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import lombok.Builder;
 import lombok.Data;
+import lombok.experimental.Tolerate;
 
 @Entity
 @Table(name = "orderStore")
 @Data
+@Builder
 public class OrderStore{
 
 	@Id
@@ -34,5 +37,8 @@ public class OrderStore{
 	private Address address;
 
 	@OneToMany(mappedBy = "orderStore")
-	private Set<OrderItem> orderItems = new HashSet<>();
+	private Set<OrderItem> orderItems;
+	
+	@Tolerate
+	public OrderStore() {}
 }

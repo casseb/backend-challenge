@@ -27,5 +27,5 @@ public class Store {
 	private Address address;
 	
 	@Tolerate
-	Store(){};
+	public Store(){};
 }

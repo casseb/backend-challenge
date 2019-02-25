@@ -7,11 +7,13 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import lombok.Builder;
 import lombok.Data;
 
 @Entity
 @Table(name = "orderItem")
 @Data
+@Builder
 public class OrderItem {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
