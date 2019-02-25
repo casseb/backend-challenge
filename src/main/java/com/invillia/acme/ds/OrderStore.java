@@ -1,7 +1,6 @@
 package com.invillia.acme.ds;
 
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -24,7 +23,6 @@ import lombok.experimental.Tolerate;
 @Data
 @Builder
 public class OrderStore{
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
@@ -39,7 +37,7 @@ public class OrderStore{
 
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<OrderItem> orderItems;
-	
+
 	@Tolerate
 	public OrderStore() {}
 }

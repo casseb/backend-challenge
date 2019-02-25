@@ -1,5 +1,23 @@
 package com.invillia.acme.rest;
 
+import static com.invillia.acme.common.Constants.INITIAL_PAYMENT_STATUS;
+import static com.invillia.acme.common.Constants.PAYMENT_REFUNDED;
+import static com.invillia.acme.common.Constants.REST_ORDER;
+import static com.invillia.acme.common.Constants.REST_ORDER_GET;
+import static com.invillia.acme.common.Constants.REST_PAYMENT;
+import static com.invillia.acme.common.Constants.REST_PAYMENT_CONFIRM;
+import static com.invillia.acme.common.Constants.REST_PAYMENT_REFUND;
+import static com.invillia.acme.common.Constants.REST_STORE;
+import static com.invillia.acme.common.Constants.REST_STORE_PUT;
+import static com.invillia.acme.common.Constants.getOrderWithItems;
+import static com.invillia.acme.common.Constants.getPayment;
+import static com.invillia.acme.common.Constants.getStoreTest;
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+
+import java.util.Arrays;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,19 +26,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import static io.restassured.RestAssured.*;
-import static io.restassured.matcher.RestAssuredMatchers.*;
-import static org.hamcrest.Matchers.*;
-
-import java.time.Clock;
-import java.time.ZoneId;
-import java.util.Arrays;
-
-import org.hamcrest.Matcher;
-
-import static io.restassured.module.jsv.JsonSchemaValidator.*;
-
-import com.invillia.acme.common.TestCase;
 import com.invillia.acme.ds.Store;
 import com.invillia.acme.service.StoreService;
 
@@ -29,7 +34,7 @@ import io.restassured.http.ContentType;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class IntegrationTests extends TestCase{
+public class IntegrationTests{
 	
 	@LocalServerPort
 	private int port;
@@ -49,7 +54,7 @@ public class IntegrationTests extends TestCase{
 			body(getStoreTest()).
 			contentType(ContentType.JSON).
 		when().
-			post("/store").
+			post(REST_STORE).
 		then().
 			assertThat().
 				statusCode(200).
@@ -68,7 +73,7 @@ public class IntegrationTests extends TestCase{
 			contentType(ContentType.JSON).
 			pathParam("id",originalStoreId).
 		when().
-			put("/store/{id}").
+			put(REST_STORE+REST_STORE_PUT).
 		then().
 			assertThat().
 				statusCode(200).
@@ -83,7 +88,7 @@ public class IntegrationTests extends TestCase{
 			queryParam("id", originalStoreId).
 			queryParam("name", getStoreTest().getName()).
 		when().
-			get("/store").
+			get(REST_STORE).
 		then().
 			assertThat().
 				statusCode(200).
@@ -96,7 +101,7 @@ public class IntegrationTests extends TestCase{
 			body(getOrderWithItems()).
 			contentType(ContentType.JSON).
 		when().
-			post("/order").
+			post(REST_ORDER).
 		then().
 			assertThat().
 				statusCode(200).
@@ -111,11 +116,11 @@ public class IntegrationTests extends TestCase{
 			body(getPayment(orderId)).
 			contentType(ContentType.JSON).
 		when().
-			post("/payment").
+			post(REST_PAYMENT).
 		then().
 			assertThat().
 				statusCode(200).
-				body("status",equalTo("PENDING")).and().body("orderId", equalTo(orderId));
+				body("status",equalTo(INITIAL_PAYMENT_STATUS.name())).and().body("orderId", equalTo(orderId));
 	}
 	
 	@Test
@@ -125,7 +130,7 @@ public class IntegrationTests extends TestCase{
 		given().
 			pathParam("id", orderId).
 		when().
-			get("/order/{id}").
+			get(REST_ORDER+REST_ORDER_GET).
 		then().
 			assertThat().
 				statusCode(200).
@@ -137,15 +142,15 @@ public class IntegrationTests extends TestCase{
 		Integer orderPaid = getOrderWithPaymentPaid();
 		
 		given().
-			pathParam("id", orderPaid).
+			pathParam("orderId", orderPaid).
 			contentType(ContentType.JSON).
 			
 		when().
-			post("/payment/refund/{id}").
+			post(REST_PAYMENT+REST_PAYMENT_REFUND).
 		then().
 			assertThat().
 				statusCode(200).
-				body("result",is("Refunded"));
+				body("result",is(PAYMENT_REFUNDED));
 	}
 	
 	private Integer getOrderWithPaymentPaid() {
@@ -155,7 +160,7 @@ public class IntegrationTests extends TestCase{
 		given().
 			pathParam("id",paymentId).
 		when().
-			post("/payment/confirm/{id}").
+			post(REST_PAYMENT+REST_PAYMENT_CONFIRM).
 		then().
 			assertThat().
 				statusCode(200).
@@ -170,7 +175,7 @@ public class IntegrationTests extends TestCase{
 			body(getPayment(orderId)).
 			contentType(ContentType.JSON).
 		when().
-			post("/payment").
+			post(REST_PAYMENT).
 		then().
 			statusCode(200).
 		extract().
@@ -183,7 +188,7 @@ public class IntegrationTests extends TestCase{
 			body(getStoreTest()).
 			contentType(ContentType.JSON).
 		when().
-			post("/store").
+			post(REST_STORE).
 		then().
 			statusCode(200).
 		extract().
@@ -196,7 +201,7 @@ public class IntegrationTests extends TestCase{
 			body(getOrderWithItems()).
 			contentType(ContentType.JSON).
 		when().
-			post("/order").
+			post(REST_ORDER).
 		then().
 			statusCode(200).
 		extract().

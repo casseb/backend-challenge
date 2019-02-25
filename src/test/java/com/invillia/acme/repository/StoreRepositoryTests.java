@@ -11,12 +11,12 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.invillia.acme.common.TestCase;
+import static com.invillia.acme.common.Constants.*;
 import com.invillia.acme.ds.Store;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
-public class StoreRepositoryTests extends TestCase{
+public class StoreRepositoryTests{
 
 	@Autowired
     private TestEntityManager entityManager;

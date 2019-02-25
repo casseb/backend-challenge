@@ -6,7 +6,6 @@ import lombok.Data;
 @Builder
 @Data
 public class PaymentResponse {
-
 	private String result;
 	
 }

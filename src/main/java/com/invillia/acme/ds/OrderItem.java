@@ -24,7 +24,7 @@ public class OrderItem {
 	private Float unit;
 
 	private Float quantity;
-	
+
 	@Tolerate
 	public OrderItem() {};
 }

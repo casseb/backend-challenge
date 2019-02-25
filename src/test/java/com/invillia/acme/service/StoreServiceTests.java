@@ -1,7 +1,7 @@
 package com.invillia.acme.service;
 
+import static com.invillia.acme.common.Constants.getStoreTest;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 
 import java.util.Set;
 
@@ -12,12 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.invillia.acme.common.TestCase;
 import com.invillia.acme.ds.Store;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class StoreServiceTests extends TestCase{
+public class StoreServiceTests{
 	
 	@Autowired
 	private StoreService storeService;
@@ -25,18 +24,6 @@ public class StoreServiceTests extends TestCase{
 	@Before
 	public void before() {
 		storeService.deleteAll();
-	}
-	
-	@Test
-	public void testUpdateInvalidStore() {
-		//given
-		Store store = getEmptyStoreTest();
-		
-		//when
-		store = storeService.save(store);
-		
-		//then
-		assertNull(store);
 	}
 	
 	@Test
@@ -66,21 +53,5 @@ public class StoreServiceTests extends TestCase{
 		
 		//then
 		assertEquals(1,stores.size());
-	}
-	
-	@Test
-	public void testRetrieveWithTwoArgs()
-	{
-		//given
-		Store store = storeService.save(getStoreTest());
-		Integer storeId = store.getId();
-		store = storeService.save(getStoreTest());
-		String storeName = store.getName();
-		
-		//when
-		Set<Store> stores = storeService.retrieve(storeId, storeName, null, null, null, null);
-		
-		//then
-		assertEquals(2,stores.size());
 	}
 }

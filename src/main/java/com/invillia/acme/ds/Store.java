@@ -9,7 +9,6 @@ import javax.persistence.Table;
 
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.experimental.Tolerate;
 
 @Entity
@@ -20,12 +19,12 @@ public class Store {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id;
-	
+
 	private String name;
-	
+
 	@Embedded
 	private Address address;
-	
+
 	@Tolerate
 	public Store(){};
 }

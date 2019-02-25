@@ -1,28 +1,22 @@
 package com.invillia.acme.service;
 
-import static org.junit.Assert.*;
+import static com.invillia.acme.common.Constants.getEmptyOrder;
+import static com.invillia.acme.common.Constants.getOrderWithItems;
+import static org.junit.Assert.assertEquals;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 
-import com.invillia.acme.common.TestCase;
-import com.invillia.acme.ds.OrderStatus;
+import static com.invillia.acme.common.Constants.*;
 import com.invillia.acme.ds.OrderStore;
-import com.invillia.acme.ds.Store;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class OrderServiceTests extends TestCase {
+public class OrderServiceTests{
 
 	@Autowired
 	private OrderService orderService;
@@ -41,7 +35,7 @@ public class OrderServiceTests extends TestCase {
 		order = orderService.insert(order);
 
 		// then
-		assertEquals(OrderStatus.PROCESSING, order.getStatus());
+		assertEquals(INITIAL_ORDER_STATUS, order.getStatus());
 	}
 
 	@Test
@@ -53,7 +47,7 @@ public class OrderServiceTests extends TestCase {
 		order = orderService.insert(order);
 
 		// then
-		assertEquals(OrderStatus.PROCESSING, order.getStatus());
+		assertEquals(INITIAL_ORDER_STATUS, order.getStatus());
 		assertEquals(5,order.getOrderItems().size());
 	}
 }

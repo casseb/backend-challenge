@@ -1,11 +1,7 @@
 package com.invillia.acme.service;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +36,7 @@ public class StoreService {
 				   state == null &&
 				   zipCode == null) 
 		{
-					return new HashSet<Store>((Collection)storeRepository.findAll());
+			return new HashSet<Store>((Collection)storeRepository.findAll());
 		}
 		
 		if(id != null) {
