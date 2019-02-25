@@ -9,6 +9,8 @@ import javax.persistence.Table;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Tolerate;
 
 @Entity
 @Table(name = "store")
@@ -23,4 +25,7 @@ public class Store {
 	
 	@Embedded
 	private Address address;
+	
+	@Tolerate
+	Store(){};
 }
