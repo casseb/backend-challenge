@@ -1,5 +1,9 @@
 package com.invillia.acme.service;
 
+import static com.invillia.acme.common.Constants.INITIAL_PAYMENT_STATUS;
+import static com.invillia.acme.common.Constants.PAYMENT_NOT_REFUNDED;
+import static com.invillia.acme.common.Constants.PAYMENT_REFUNDED;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -7,7 +11,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import static com.invillia.acme.common.Constants.*;
 import com.invillia.acme.ds.OrderNull;
 import com.invillia.acme.ds.OrderStatus;
 import com.invillia.acme.ds.OrderStore;
@@ -18,7 +21,10 @@ import com.invillia.acme.ds.PaymentStatus;
 import com.invillia.acme.repository.OrderStoreRepository;
 import com.invillia.acme.repository.PaymentRepository;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class PaymentService {
 
 	@Autowired
@@ -34,9 +40,11 @@ public class PaymentService {
 
 	public PaymentResponse refundPayment(Integer orderId) {
 		if(orderAvaliableToRefund(orderId)) {
+			log.debug("Order {} can be refunded",orderId);
 			List<Payment> payments = paymentRepository.findByOrderIdAndStatus(orderId, PaymentStatus.PAID);
 			for(Payment payment:payments) {
 				payment.setStatus(PaymentStatus.REFUNDED);
+				log.debug("Payment {} will be refunded",payment.getId());
 			}
 			paymentRepository.saveAll(payments);
 			
@@ -46,12 +54,14 @@ public class PaymentService {
 			
 			return getPaymentResponse(PAYMENT_REFUNDED);
 		}
+		log.debug("Order {} can't be refunded",orderId);
 		return getPaymentResponse(PAYMENT_NOT_REFUNDED);
 	}
 
 	public Payment confirmPayment(Integer paymentId) {
 		Optional<Payment> optionalPayment = paymentRepository.findById(paymentId);
 		if(!optionalPayment.isPresent()) {
+			log.debug("Payment {} wasn't found",paymentId);
 			return new PaymentNull();
 		}
 		
@@ -71,6 +81,7 @@ public class PaymentService {
 	private boolean orderConfirmedUntilTenDays(Integer orderId) {
 		OrderStore order = orderRepository.findById(orderId).orElse(new OrderNull());
 		if(order.getId() == 0) {
+			log.debug("Order {} wasn't found",orderId);
 			return false;
 		}
 		
@@ -81,6 +92,7 @@ public class PaymentService {
 		if(dueDate.isAfter(today)) {
 			return true;
 		}
+		log.debug("Order {} has expired the deadline for refund with dueDate: ",orderId,dueDate);
 		return false;
 	}
 	

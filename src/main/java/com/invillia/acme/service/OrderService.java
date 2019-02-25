@@ -1,11 +1,12 @@
 package com.invillia.acme.service;
 
+import static com.invillia.acme.common.Constants.INITIAL_ORDER_STATUS;
+
 import java.time.LocalDate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import static com.invillia.acme.common.Constants.*;
 import com.invillia.acme.ds.OrderNull;
 import com.invillia.acme.ds.OrderStore;
 import com.invillia.acme.repository.OrderItemRepository;

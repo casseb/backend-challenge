@@ -1,5 +1,15 @@
 package com.invillia.acme.rest;
 
+import static com.invillia.acme.common.Constants.REST_STORE;
+import static com.invillia.acme.common.Constants.REST_STORE_GET;
+import static com.invillia.acme.common.Constants.REST_STORE_GET_CITY;
+import static com.invillia.acme.common.Constants.REST_STORE_GET_ID;
+import static com.invillia.acme.common.Constants.REST_STORE_GET_NAME;
+import static com.invillia.acme.common.Constants.REST_STORE_GET_STATE;
+import static com.invillia.acme.common.Constants.REST_STORE_GET_STREET_ADDRESS;
+import static com.invillia.acme.common.Constants.REST_STORE_GET_ZIPCODE;
+import static com.invillia.acme.common.Constants.REST_STORE_PUT;
+
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,12 +22,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.invillia.acme.common.Constants.*;
 import com.invillia.acme.ds.Store;
 import com.invillia.acme.service.StoreService;
 
+import lombok.extern.slf4j.Slf4j;
+
 @RestController
 @RequestMapping(REST_STORE)
+@Slf4j
 public class StoreRestController {
 
 	@Autowired
@@ -25,11 +37,13 @@ public class StoreRestController {
 
 	@PostMapping
 	public Store post(@RequestBody Store store) {
+		log.info("Post a new store: {}",store);
 		return storeService.save(store);
 	}
 
 	@GetMapping(REST_STORE_GET)
 	public Store getById(@PathVariable Integer id) {
+		log.info("Get a store with id: {}",id);
 		return storeService.retrieveById(id);
 	}
 
@@ -45,6 +59,7 @@ public class StoreRestController {
 
 	@PutMapping(REST_STORE_PUT)
 	public Store put(@RequestBody Store store, @PathVariable Integer id) {
+		log.info("Edit the store with id: {}",id);
 		store.setId(id);;
 		return storeService.save(store);
 	}
