@@ -35,5 +35,4 @@ public class OrderStore{
 
 	@OneToMany(mappedBy = "orderStore")
 	private Set<OrderItem> orderItems = new HashSet<>();
-
 }

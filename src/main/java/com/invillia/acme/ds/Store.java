@@ -5,14 +5,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import lombok.Builder;
 import lombok.Data;
 
 @Entity
 @Table(name = "store")
 @Data
+@Builder
 public class Store {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
